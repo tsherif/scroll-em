@@ -120,7 +120,7 @@
         BODY.appendChild(anchor);
       },
 
-      setMinWidth: function(min) {
+      setMinPageWidth: function(min) {
         min_width = min;
 
         resetDimensions();
