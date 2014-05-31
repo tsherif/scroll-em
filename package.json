@@ -1,0 +1,19 @@
+{
+  "name": "scroll-em",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tsherif/scroll-em.git"
+  },
+  "author": {
+    "name": "Tarek Sherif",
+    "email": "tsherif@gmail.com",
+    "url": "http://tareksherif.ca/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.3.2"
+  }
+}
