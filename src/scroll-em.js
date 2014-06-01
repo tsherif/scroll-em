@@ -36,6 +36,8 @@
     var HTML = document.documentElement;
     var BODY = document.body;
     var scroll_elements = [];
+    var bookmarks = [];
+
     var scroll_range = 200;
     var recording_position = 0;
     var container = null;
@@ -112,17 +114,31 @@
         scroll_position = scroll_position === undefined ? recording_position : scroll_position;
 
         var before = options.before;
+        var offset = options.offset === undefined ? 0 : options.offset;
         var units = options.units === undefined ? "px" : units;
 
 
         var bookmark = document.createElement("div");
 
         bookmark.id = id;
-        bookmark.style.position = "absolute";
-        bookmark.style.top = scroll_position + units;
+
+        if (window.innerWidth < min_width) {
+          bookmark.style.position = "relative";
+          bookmark.style.top = offset + units;
+        } else {
+          bookmark.style.position = "absolute";
+          bookmark.style.top = scroll_position + units;
+        }
+
+        bookmarks.push({
+          element: bookmark,
+          static_offset: offset,
+          absolute_offset: scroll_position,
+          units: units
+        });
 
         if (before) {
-          before.parent.insertBefore(bookmark, before);
+          before.parentElement.insertBefore(bookmark, before);
         } else {
           BODY.appendChild(bookmark);
         }
@@ -180,12 +196,22 @@
         BODY.style.overflowX = default_css_body_overflow_x;
         BODY.style.position = default_css_body_position;
         BODY.style.height = default_css_body_height;
+
+        bookmarks.forEach(function(bookmark) {
+          bookmark.element.style.position = "relative";
+          bookmark.element.style.top = bookmark.static_offset + bookmark.units;
+        });
       } else {
         HTML.style.height = css_page_height;
         HTML.style.overflowX = "hidden";
         BODY.style.overflowX = "hidden";
         BODY.style.position = "relative";
         BODY.style.height = "100%";
+
+        bookmarks.forEach(function(bookmark) {
+          bookmark.element.style.position = "absolute";
+          bookmark.element.style.top = bookmark.absolute_offset + bookmark.units;
+        });
       }
 
       update();
