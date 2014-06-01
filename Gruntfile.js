@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     licence: grunt.file.read("LICENSE"),
     uglify: {
       options: {
-        banner: "/*\n<%= pkg.name %> v<%= pkg.version %> \n\n<%= licence %>*/\n",
+        banner: "/*\nScrollEm v<%= pkg.version %> \n\n<%= licence %>*/\n",
         preserveComments: "some"
       },
       build: {

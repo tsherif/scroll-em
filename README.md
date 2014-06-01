@@ -3,6 +3,8 @@ ScrollEm
 
 ScrollEm is a JavaScript library for creating scrolling animations on a web page. ScrollEm allows the user to make numeric CSS properties vary based on the current vertical scroll position of the page.
 
+ScrollEm was used to build [my personal website](http://tareksherif.ca/).
+
 Usage
 ------
 
@@ -57,7 +59,7 @@ It is recommended to use a centered container element of fixed width to anchor m
   ScrollEm.setContainer(document.getElementById("container"));
 ```
 
-Strings can be used to dynamically set CSS values based on page dimensions at the time of an update, and these strings can use special placeholders for key page measurments. These include:
+Strings can be used to dynamically set CSS values based on page dimensions at the time of an update, and these strings can use special placeholders for key page measurments. These placeholders consist of the following:
 
 * **WINDOW_WIDTH**: the current width of the window
 * **WINDOW_HEIGHT**: the current height of the window
@@ -73,6 +75,14 @@ Strings can be used to dynamically set CSS values based on page dimensions at th
         end: "MARGIN_LEFT + CONTAINER_WIDTH - 100"
       }
     }
+  });
+```
+
+To allow for navigation to arbitrary points in the page, **ScrollEm.addBookmark()** can be used with the bookmark element's id and y offset as arguments. The **before** option can be used to pass a reference element, before which the bookmark element will be inserted:
+
+```JavaScript
+  ScrollEm.addBookmark("bookmark", 1200, {
+    before: document.getElementById("reference-element");
   });
 ```
 

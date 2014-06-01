@@ -107,17 +107,25 @@
         scroll_range = range;
       },
 
-      addAnchor: function(id, scroll_position, units) {
+      addBookmark: function(id, scroll_position, options) {
+        options = options || {};
         scroll_position = scroll_position === undefined ? recording_position : scroll_position;
-        units =  units === undefined ? "px" : units;
 
-        var anchor = document.createElement("div");
+        var before = options.before;
+        var units = options.units === undefined ? "px" : units;
 
-        anchor.id = id;
-        anchor.style.position = "absolute";
-        anchor.style.top = scroll_position + units;
 
-        BODY.appendChild(anchor);
+        var bookmark = document.createElement("div");
+
+        bookmark.id = id;
+        bookmark.style.position = "absolute";
+        bookmark.style.top = scroll_position + units;
+
+        if (before) {
+          before.parent.insertBefore(bookmark, before);
+        } else {
+          BODY.appendChild(bookmark);
+        }
       },
 
       setMinPageWidth: function(min) {
