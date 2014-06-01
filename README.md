@@ -90,7 +90,7 @@ For responsive designs, a minimum width at which the animations stop begin execu
   ScrollEm.setMinPageWidth(800);
 ```
 
-To allow for navigation to arbitrary points in the page, **ScrollEm.addBookmark()** can be used with the bookmark element's id and y offset as arguments. The **before** option can be used to pass a reference element, before which the bookmark element will be inserted. An **offset** option can also be given to indicate a relative offset from the reference element that is triggered when the page size fall below the minimum width. This can be useful for setting bookmark positions appropriately when ScrollEm falls back to non-animated mode:
+To allow for navigation to arbitrary points in the page, **ScrollEm.addBookmark()** can be used with the bookmark element's id and y offset as arguments. A **before** option can be given to pass a reference element, before which the bookmark element will be inserted in the DOM. An **offset** option can also be given to indicate a relative offset from the reference element that is triggered when the page size fall below the minimum width. This can be useful for setting bookmark positions appropriately when ScrollEm falls back to non-animated mode:
 
 ```JavaScript
   ScrollEm.addBookmark("bookmark", 1200, {
