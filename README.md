@@ -117,6 +117,12 @@ Multiple vendor prefixes for a property can be managed by passing an array of pr
   });
 ```
 
+By default, elements will jump to the calculated target position. To smooth animations, an easing value can be set using **ScrollEm.setEasing()**.
+
+```JavaScript
+  ScrollEm.setEasing(0.7);
+```
+
 Instead of setting the **start** and **end** scroll positions directly, it is possible to set a default scroll range (i.e. distance between the scroll start and end positions) using **ScrollEm.setDefaultScrollRange()**, and then only the **start** option is required. Furthermore, for a series of animations, this functionality can be used with ScrollEm's built in position recorder to set new animation scroll positions relative to old ones. The current scroll position being recorded can be moved forwards or backwards using **ScrollEm.forward()** and **ScrollEm.back()**. If the recorded scroll position is used, then both the scrolling **start** and **end** options can be omitted for **ScrollEm.add()**:
 
 ```JavaScript
