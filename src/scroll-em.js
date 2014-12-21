@@ -92,6 +92,7 @@
 
     var scroll_range = 200;
     var recording_position = 0;
+    var easing = 0;
     var container = null;
     var min_width = window.innerWidth;
     var css_page_height = window.innerHeight + "px";
@@ -102,7 +103,6 @@
     var default_css_body_position = BODY.style.position;
     var default_css_body_height = BODY.style.height;
 
-    var do_update = false;
     var TRANSFORM_PROPERTIES = ["-webkit-transform", "-ms-transform", "transform"];
     var transform_counter = 0;
 
@@ -176,6 +176,7 @@
             var units = property_settings.units = property_options.units === undefined ? "px" : property_options.units;
             var wrapper = property_settings.wrapper = property_options.wrapper;
             property_settings.end = property_options.end === undefined ? start : property_options.end;
+            property_settings.current_value = start;
 
             scroll_element.css[property] = property_settings;
 
@@ -187,9 +188,9 @@
 
             if (window.innerWidth >= min_width) {
               if (typeof wrapper === "function") {
-                element.style[property] = property_settings.current_value = wrapper(parseValue(start));
+                element.style[property] = property_settings.current_style = wrapper(parseValue(start));
               } else {
-                element.style[property] = property_settings.current_value = parseValue(start) + units;
+                element.style[property] = property_settings.current_style = parseValue(start) + units;
               }
             }
 
@@ -214,6 +215,10 @@
 
       resetRecorder: function() {
         recording_position = 0;
+      },
+
+      setEasing: function(ease) {
+        easing = ease;
       },
 
       setContainer: function(new_container) {
@@ -274,11 +279,6 @@
       }
     };
 
-
-    window.addEventListener("scroll", function() {
-      do_update = true;
-    });
-
     window.requestAnimationFrame(update);
 
     window.addEventListener("resize", resetDimensions);
@@ -286,10 +286,7 @@
     function update() {
       window.requestAnimationFrame(update);
 
-      if (!do_update) return;
-
       var position = window.pageYOffset;
-      do_update = false;
 
       scroll_elements.forEach(function(scroll_element) {
         var proportion = (position - scroll_element.start) / (scroll_element.end - scroll_element.start);
@@ -300,8 +297,8 @@
           var property_settings = scroll_element.css[property];
 
           if (DIMENSIONS.WINDOW_WIDTH < min_width) {
-            if (!property_settings.transform && property_settings.current_value !== property_settings.default) {
-              scroll_element.element.style[property] = property_settings.current_value = property_settings.default;
+            if (!property_settings.transform && property_settings.current_style !== property_settings.default) {
+              scroll_element.element.style[property] = property_settings.current_style = property_settings.default;
             }
             return;
           }
@@ -312,18 +309,28 @@
           var units = property_settings.units;
           var wrapper = property_settings.wrapper;
 
-          var value = start + proportion * (end - start);
+          var target = start + proportion * (end - start);
+          var delta = target - property_settings.current_value;
+          var value, style;
+
+          if (Math.abs(delta) > 1) {
+            value = target - delta * easing;
+          } else {
+            value = target;
+          }
+
+          property_settings.current_value = value;
 
           if (typeof wrapper === "function") {
-            value = wrapper(value);
+            style = wrapper(value);
           } else {
-            value = value + units;
+            style = value + units;
           }
 
           if (property_settings.transform) {
-            transform_list.push(value);
-          } else if (property_settings.current_value !== value) {
-            scroll_element.element.style[property] = property_settings.current_value = value;
+            transform_list.push(style);
+          } else if (property_settings.current_style !== style) {
+            scroll_element.element.style[property] = property_settings.current_style = style;
           }
         });
   
@@ -383,7 +390,6 @@
         });
       }
 
-      do_update = true;
     }
 
     function getLeftOffset(element) {
@@ -399,6 +405,5 @@
     }
 
   })();
-
 
 })();
