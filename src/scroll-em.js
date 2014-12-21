@@ -186,7 +186,7 @@
 
             property_settings.default = element.style[property];
 
-            if (window.innerWidth >= min_width) {
+            if (DIMENSIONS.WINDOW_WIDTH >= min_width) {
               if (typeof wrapper === "function") {
                 element.style[property] = property_settings.current_style = wrapper(parseValue(start));
               } else {
@@ -207,6 +207,30 @@
 
       back: function(amount) {
         recording_position -= amount;
+      },
+
+      resetElements: function() {
+        if (DIMENSIONS.WINDOW_WIDTH >= min_width) {
+          scroll_elements.forEach(function(scroll_element) {
+            var element = scroll_element.element;
+
+            Object.keys(scroll_element.css).forEach(function(property) {
+              var property_settings = scroll_element.css[property];
+
+              var start = parseValue(property_settings.start);
+              var units = property_settings.units;
+              var wrapper = property_settings.wrapper;
+
+              property_settings.current_value = start;
+              if (typeof wrapper === "function") {
+                element.style[property] = property_settings.current_style = wrapper(parseValue(start));
+              } else {
+                element.style[property] = property_settings.current_style = parseValue(start) + units;
+              }
+            });
+  
+          });
+        }
       },
 
       recorderPosition: function() {

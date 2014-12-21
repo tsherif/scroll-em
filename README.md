@@ -117,7 +117,7 @@ Multiple vendor prefixes for a property can be managed by passing an array of pr
   });
 ```
 
-By default, elements will jump to the calculated target position. To smooth animations, an easing value can be set using **ScrollEm.setEasing()**.
+By default, elements will jump to the calculated target style. To smooth transitions, an easing value can be set using **ScrollEm.setEasing()**.
 
 ```JavaScript
   ScrollEm.setEasing(0.7);
@@ -198,5 +198,11 @@ To allow for navigation to arbitrary points in the page, **ScrollEm.addBookmark(
     before: document.getElementById("reference-element"),
     offset: 100
   });
+```
+
+Normally, elements will being transitioning from their currently calculated styles. In some cases, however, it might be desirable to have them animate from their original styles. To do this, simply call **ScrollEm.resetElements()** before navigating to a particular scroll position:
+
+```JavaScript
+  ScrollEm.resetElements();
 ```
 
